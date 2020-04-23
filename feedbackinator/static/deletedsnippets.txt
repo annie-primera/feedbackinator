@@ -1,0 +1,6 @@
+BOTON PARA BORRAR FEEDBACK
+<div class="col">
+    <form class="form-inline my2 my-lg-0" action="/borrarfeedback/{{ feed.id }}">
+        <input type="submit" value="Delete" class="btn btn-danger">
+    </form>
+</div>

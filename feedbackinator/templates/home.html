@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<body>
+
+    <div class="container mt-3 mb-5">
+        <p>Agregar otro curso</p>
+        <form class="form-inline my-2 my-lg-0" action="/nuevocurso" method="POST">
+        <input type="text", id="nombrecurso", class="form-control", name="nombrecurso" required>
+        <button type="submit" class="btn btn-success">Nuevo curso</button>
+        </form>
+    </div>
+
+	<p>Lista de cursos</p>
+
+	{% if cursos is not none %}
+        {% for curso in cursos %}
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    <h3><a href="/cursos/{{ curso.id }}">{{ curso }}</a></h3>
+                </div>
+                <div class="col">
+                    <form class="form-inline my2 my-lg-0" action="/borrarcurso/{{ curso.id }}">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="container">
+            <h4>Todavía no hay ningún curso.</h4>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
