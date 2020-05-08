@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, request
 from feedbackinator import app, db
 from feedbackinator.models import Cursos, Actividades, Feedback
 
@@ -15,10 +15,24 @@ def cursos(curso):
 	return render_template("cursos.html", actividades=actividades, curso=curso_actual)
 
 
-@app.route("/feedback/<actividad>")
+@app.route("/feedback/<actividad>", methods=["GET", "POST"])
 def feedback(actividad):
 	feedback = Feedback.query.filter_by(actividad=actividad).all()
-	return render_template("feedback.html", actividad=actividad, feedback=feedback)
+	if request.method=="GET":
+		mensaje = "Elige feedback"
+		return render_template("feedback.html", actividad=actividad, feedback=feedback, mensaje=mensaje)
+	elif request.method=="POST":
+		snippets = request.form.getlist('formafeedback')
+		t_snippets = tuple(snippets)
+		compiled_feedback = " "
+		espacio = " "
+		for t in t_snippets:
+			specific_feedback = Feedback.query.filter_by(id=t).first()
+			string_feedback = str(specific_feedback)
+			compiled_feedback = compiled_feedback + string_feedback + compiled_feedback
+		print(compiled_feedback)
+		return render_template("feedback.html", actividad=actividad, feedback=feedback, mensaje=compiled_feedback)
+
 
 
 @app.route("/nuevocurso", methods=["POST"])
@@ -53,11 +67,6 @@ def nuevofeedback():
 	return redirect(url_for("feedback", actividad=nombreactividad))
 
 
-@app.route("/agregarfeedback/<feedback>")
-def agregarfeedback(feedback):
-	return render_template("feedback.html")
-
-
 @app.route("/borrarcurso/<curso>")
 def borrarcurso(curso):
 	curso = Cursos.query.get(curso)
@@ -77,10 +86,18 @@ def borraractiviidad(actividad):
 	return redirect(url_for("index", cursos=cursos))
 
 
-@app.route("/borrarfeedback/<feedback>")
+@app.route("/managefeedback/<actividad>")
+def managefeedback(actividad):
+	feedback = Feedback.query.filter_by(actividad=actividad).all()
+	return render_template("managefeedback.html", feedback=feedback, actividad=actividad)
+
+
+@app.route("/borrarfeedback/<feedback>", methods=["POST"])
 def borrarfeedback(feedback):
-	feedback = Feedback.query.get(feedback)
-	db.session.delete(feedback)
+	feed = Feedback.query.get(feedback)
+	actividad = request.form.get("actividad")
+	db.session.delete(feed)
 	db.session.commit()
 	cursos = Cursos.query.all()
-	return redirect(url_for("index", cursos=cursos))
+	return redirect(url_for("managefeedback", actividad=actividad))
+	#return redirect(url_for("index", cursos=cursos))

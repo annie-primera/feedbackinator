@@ -7,6 +7,8 @@
 </div>
 
 <div class="container mt-3 mb-10">
+	<p><a href="/">Regresar a inicio</a></p>
+	<p><a href="/managefeedback/{{actividad}}">Administrar feedback</a></p>
     <p>Agregar nuevo feedback</p>
     <form class="form-inline my-2 my-lg-0" action="/nuevofeedback" method="POST">
     <p>Feedback</p>
@@ -31,25 +33,29 @@
 </div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-sm-8">
-    	{% if feedback is not none %}
-	        {% for feed in feedback %}
-	        <div class="container">
-	            <div class="row mb-3">
-	                <div class="col">
-	                    <p><a href="/agregarfeedback/{{ feed.id }}">{{ feed }}</a></p>
-	                </div>
-	            </div>
-	        </div>
-	        {% endfor %}
-	    {% else %}
-	        <div class="container">
-	            <h4>Todavía no hay ningún curso.</h4>
-	        </div>
-	    {% endif %}
+	<div class="row">
+	    <div class="col-sm-8">
+	    	<form method="POST" action="/feedback/{{actividad}}">
+	    	{% if feedback is not none %}
+		        {% for feed in feedback %}
+		        <div class="container">
+		            <div class="row mb-3">
+		                   <input type="checkbox" value="{{feed.id}}" name="formafeedback">{{ feed }}
+		            </div>
+		        </div>
+		        {% endfor %}
+		        <input type="submit">
+		    {% else %}
+		        <div class="container">
+		            <h4>Todavía no hay ningún curso.</h4>
+		        </div>
+		    {% endif %}
+			</form>
+	    </div>
+	</div>
+	<div class ="row">
+    	{{mensaje}}
     </div>
-    <div class="col-sm-4">col-sm-4</div>
  </div>
 
 

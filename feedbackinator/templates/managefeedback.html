@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-3 mb-10">
+    <h1></h1>
+</div>
+
+<div class="container mt-3 mb-10">
+	<a href="/feedback/{{actividad}}">Ir a feedback</a>
+    <p>Agregar nuevo feedback</p>
+    <form class="form-inline my-2 my-lg-0" action="/nuevofeedback" method="POST">
+    <p>Feedback</p>
+    	<textarea id="feedback", name="feedback">
+        </textarea><br>
+    <p>ID de la actividad</p>
+    <input type="text", id="nombreactividad", name="nombreactividad" required>
+    <button type="submit" class="btn btn-success">Agregar feedback</button>
+    </form>
+</div>
+
+<div class="container mt-3 mb-10">
+    <h1></h1>
+</div>
+
+<div class="container mt-3 mb-10">
+    <h1></h1>
+</div>
+
+<div class="container mt-3 mb-10">
+    <h1>Feedback</h1>
+</div>
+
+<div class="container mt-3 mb-10">
+	{% if feedback is not none %}
+        {% for feed in feedback %}
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    {{ feed }}
+                </div>
+                <div class="col">
+                    <form class="form-inline my2 my-lg-0" action="/borrarfeedback/{{ feed.id }}" method="POST">
+                    	<input type="hidden" name="actividad" value="{{actividad}}">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="container">
+            <h4>Todavía no hay feedback.</h4>
+        </div>
+    {% endif %}
+</div>
+
+
+
+
+{% endblock %}
