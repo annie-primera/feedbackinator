@@ -7,8 +7,7 @@
         <form class="form-inline my-2 my-lg-0" action="/nuevaactividad" method="POST">
         <p>Nombre de la actividad</p>
         <input type="text", id="nombreactividad", class="form-control", name="nombreactividad" required>
-        <p>ID del curso</p>
-        <input type="text", id="nombrecurso", name="nombrecurso" required>
+        <input type="hidden", id="nombrecurso", name="nombrecurso" value="{curso}">
         <button type="submit" class="btn btn-success">Nueva actividad</button>
         </form>
     </div>

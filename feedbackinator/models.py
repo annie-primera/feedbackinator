@@ -23,6 +23,15 @@ class Feedback(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	actividad = db.Column(db.Integer, db.ForeignKey("actividades.id"), nullable=False)
 	feedback = db.Column(db.Text, nullable = False)
+	#tag = db.Column(db.Text, db.ForeignKey("tags.id"), nullable=False)
 
 	def __repr__(self):
 		return self.feedback
+
+
+class Tags(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	tag = db.Column(db.Text, nullable=False)
+
+	def __repr__(self):
+		return self.tag

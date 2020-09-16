@@ -19,6 +19,7 @@ def cursos(curso):
 def feedback(actividad):
 	feedback = Feedback.query.filter_by(actividad=actividad).all()
 	if request.method=="GET":
+		actividad = actividad
 		mensaje = "Elige feedback"
 		return render_template("feedback.html", actividad=actividad, feedback=feedback, mensaje=mensaje)
 	elif request.method=="POST":
@@ -79,6 +80,8 @@ def borrarcurso(curso):
 @app.route("/borraractividad/<actividad>")
 def borraractiviidad(actividad):
 	actividad = Actividades.query.get(actividad)
+	feedback = Feedback.query.filter_by(actividad=actividad).all()
+	db.session.delete(feedback)
 	db.session.delete(actividad)
 	db.session.commit()
 	actividades = Actividades.query.all()
